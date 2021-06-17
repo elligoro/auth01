@@ -1,0 +1,10 @@
+﻿@model auth01.Controllers.AuthTokenResponse
+
+<div class="jumbotron">
+    <h3> access token: @Model?.access_token </h3>
+    <h3> scope value: </h3>
+
+</div>
+<div class="text-center">
+    <button id="get_auth" onclick="sendAuth()">Get Auth Token</button>
+</div>
