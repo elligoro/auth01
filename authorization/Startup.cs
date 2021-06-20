@@ -2,8 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using authorization.contracts;
 using authorization.Controllers;
+using authorization.logic.Models;
 using authorization.persistance;
+using Autofac;
+using contracts;
+using logic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using persistence;
 
 namespace authorization
 {
@@ -29,6 +35,13 @@ namespace authorization
             services.AddControllersWithViews();
             services.Configure<AuthTokenResponse>(Configuration.GetSection("AuthTokenResponse"));
             services.AddDbContext<AuthContext>(options => options.UseSqlServer(Configuration.GetConnectionString("testDatabase")));
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            // Add things to the Autofac ContainerBuilder.
+            builder.RegisterType<HomeLogic>().As<IHomeLogic>();
+            builder.RegisterType<HomeDb>().As<IHomeDb>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

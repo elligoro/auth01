@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using auth01.Controllers;
+using Autofac;
+using client.autofac;
+using client.contracts;
+using client.logic.Models;
+using logic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -21,12 +26,19 @@ namespace auth01
         }
 
         public IConfiguration Configuration { get; }
+        public ILifetimeScope AutofacContainer { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
             services.Configure<AuthorizationModel>(Configuration.GetSection("AuthClient"));
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            // Add things to the Autofac ContainerBuilder.
+            builder.RegisterType<HomeLogic>().As<IHomeLogic>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
