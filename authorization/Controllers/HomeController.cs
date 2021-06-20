@@ -55,9 +55,9 @@ namespace authorization.Controllers
 
         [HttpGet]
         [Route("/code/{client_id}")]
-        public async Task<int> GetCode(string client_id)
+        public async Task<AuthCodeResponse> GetCode(string client_id, Guid state)
         {
-            return await _homeLogic.GetCode(client_id);
+            return await _homeLogic.GetCode(client_id,state);
         }
 
 

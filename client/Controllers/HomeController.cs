@@ -61,6 +61,13 @@ namespace auth01.Controllers
         [Route("/code")]
         public async Task<IActionResult> GetAuthorizationCode()
         {
+            Guid state_req_guid;
+            Guid state_res_guid;
+            Guid.TryParse(Request.Query["state_req"], out state_req_guid);
+            Guid.TryParse(Request.Query["state_res"], out state_res_guid);
+
+            if (!_homeLogic.ValidateState(state_req_guid, state_res_guid))
+                throw new Exception("state value did not match");
             var dto = await _homeLogic.SetAuthCode(Request.Query["code"]);
             return  RedirectToAction("Index", dto);
         }
