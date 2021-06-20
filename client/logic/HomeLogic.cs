@@ -49,10 +49,13 @@ namespace logic
                 {
                     client_id = ac.client_id,
                     response_type = "code",
-                    redirect_uri = ac.redirect_uri.GetValueOrDefault("code")
+                    redirect_uri = ac.redirect_uri.GetValueOrDefault("code"),
+                    state = Guid.NewGuid()
                 }
             };
             return res;
         }
+
+        public bool ValidateState(Guid state_req, Guid state_res) => state_req == state_res;
     }
 }

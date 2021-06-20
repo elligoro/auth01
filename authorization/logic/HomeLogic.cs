@@ -29,11 +29,13 @@ namespace logic
             _homeDb = homeDb;
         }
 
-        public async Task<int> GetCode(string client_id)
+        public async Task<AuthCodeResponse> GetCode(string client_id, Guid state)
         {
             var code = new Random().Next(99999, int.MaxValue);
             await _homeDb.UpsertCode(code, client_id);
-            return code;
+
+            return new AuthCodeResponse { code = code, 
+                                          state = state};
         }
 
         public async Task<AuthTokenResponse> GetAuthorizationToken(HttpRequest request)

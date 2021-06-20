@@ -7,7 +7,7 @@ namespace contracts
 {
     public interface IHomeLogic
     {
-        Task<int> GetCode(string client_id);
+        Task<AuthCodeResponse> GetCode(string client_id, Guid state);
         Task<AuthTokenResponse> GetAuthorizationToken(HttpRequest request);
     }
 }
