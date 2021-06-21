@@ -33,6 +33,7 @@ namespace auth01
         {
             services.AddControllersWithViews();
             services.Configure<AuthorizationModel>(Configuration.GetSection("AuthClient"));
+            services.Configure<ResourceBaseModel>(Configuration.GetSection("ResourceBase"));
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

@@ -10,7 +10,7 @@ namespace client.contracts
     {
         Task<AuthTokenResponse> SetAuthCode(string code);
         AuthCodeRedirectModel GetAuthUrl();
-
         bool ValidateState(Guid state_req, Guid state_res);
+        Task<ProtectedResourceResponse> GetProtectedResource();
     }
 }
