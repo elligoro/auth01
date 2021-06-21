@@ -1,4 +1,4 @@
-﻿@model auth01.Controllers.AuthTokenResponse
+﻿@model client.logic.Models.AuthTokenResponse
 
 <div class="jumbotron">
     <h3> access token: @Model?.access_token </h3>
@@ -7,4 +7,9 @@
 </div>
 <div class="text-center">
     <button id="get_auth" onclick="sendAuth()">Get Auth Token</button>
+    <button id="get_resource" onclick="getResource()">Get Protected Resource</button>
 </div>
+
+<script type="text/javascript">
+    var token = "@Model?.access_token";
+</script>

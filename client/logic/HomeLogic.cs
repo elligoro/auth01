@@ -57,5 +57,10 @@ namespace logic
         }
 
         public bool ValidateState(Guid state_req, Guid state_res) => state_req == state_res;
+
+        public async Task<ProtectedResourceResponse> GetProtectedResource()
+        {
+            return await Task.FromResult<ProtectedResourceResponse>( new ProtectedResourceResponse { } );
+        }
     }
 }

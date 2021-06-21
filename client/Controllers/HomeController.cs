@@ -28,10 +28,12 @@ namespace auth01.Controllers
         private readonly ILogger<HomeController> _logger;
         //private readonly HomeHandler _homeHandler;
         private readonly IHomeLogic _homeLogic;
-        public HomeController(ILogger<HomeController> logger, IHomeLogic homeLogic)
+        private readonly IOptions<ResourceBaseModel> _resources;
+        public HomeController(ILogger<HomeController> logger, IHomeLogic homeLogic, IOptions<ResourceBaseModel> resources)
         {
             _logger = logger;
             _homeLogic = homeLogic;
+            _resources = resources;
         }
 
         public IActionResult Index(AuthTokenResponse authTokenResponse)
@@ -71,5 +73,21 @@ namespace auth01.Controllers
             var dto = await _homeLogic.SetAuthCode(Request.Query["code"]);
             return  RedirectToAction("Index", dto);
         }
+        
+        [HttpGet]
+        [Route("home/GetProtectedResource")]
+        public async Task<ProtectedResourceResponse> GetProtectedResource(string token)
+        {
+            if (string.IsNullOrEmpty(token))
+                throw new Exception("don't have access token");
+
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, _resources.Value.ResourceTest);
+            httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
+            var result = (await new HttpClient().SendAsync(httpRequestMessage)).Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<ProtectedResourceResponse>(result.Result);
+            //return await _homeLogic.GetProtectedResource();
+        }
+        
     }
 }

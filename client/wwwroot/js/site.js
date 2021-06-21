@@ -3,6 +3,14 @@
 
 // Write your JavaScript code.
 
+window.addEventListener('load', function (e) {
+    if (window.token) {
+        var existingToken = window.localStorage.getItem('access_token');
+        if (!existingToken || existingToken != window.token)
+            window.localStorage.setItem('access_token', window.token);
+    }
+});
+
 function sendAuth() {
     $.ajax({
         url: "Home/GetAuthUrl",
@@ -23,4 +31,18 @@ function setPropsToQuery(obj) {
         query += `${prop}=${obj[prop]}&`;
     }
     return query;
+}
+
+function getResource() {
+    $.ajax({
+        url: "Home/GetProtectedResource?token=" + localStorage.getItem('access_token'),
+        method: "GET",
+        dataType: "json",
+        success: (json) => {
+            if (!json)
+                return;
+
+            console.log(json);
+        }
+    });
 }
