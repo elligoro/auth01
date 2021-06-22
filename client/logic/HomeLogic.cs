@@ -36,6 +36,8 @@ namespace logic
             var result = (await new HttpClient().SendAsync(httpRequestMessage)).Content.ReadAsStringAsync();
             if (result is null)
                 throw new Exception("problem with authentication proccess!!!");
+
+            var statusCode = result.Status;
             return JsonConvert.DeserializeObject<AuthTokenResponse>(result.Result);
         }
 

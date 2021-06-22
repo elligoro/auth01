@@ -16,7 +16,7 @@ namespace resource.Controllers
         public async Task<ResourceGetResponse> GetResource()
         {
             string header = HttpContext.Request.Headers["Authorization"];
-            var token = header.Substring("bearer ".Length).Trim();
+            var token = header.ToLower().Substring("bearer ".Length).Trim();
             var res = new ResourceGetResponse { TestResult = "result!" };
             if (!(string.IsNullOrEmpty(token)))
                 res.TestResult = "have token!";

@@ -21,7 +21,6 @@ namespace authorization.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IHomeLogic _homeLogic;
-        private int _code; // temp. just to check working
 
         public HomeController(ILogger<HomeController> logger, 
                               IHomeLogic homeLogic)

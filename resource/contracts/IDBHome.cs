@@ -2,7 +2,8 @@
 
 namespace contracts
 {
-    public class Class1
+    public interface IDBHome
     {
+
     }
 }

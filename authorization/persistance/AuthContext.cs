@@ -22,5 +22,7 @@ namespace authorization.persistance
         [Key]
         public string client_id { get; set; }
         public int? code { get; set; }
+        public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
     }
 }

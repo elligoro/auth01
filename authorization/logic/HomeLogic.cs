@@ -1,4 +1,5 @@
 ﻿using authorization.contracts;
+using authorization.DB.Models;
 using authorization.logic.Models;
 using authorization.persistance;
 using contracts;
@@ -32,7 +33,7 @@ namespace logic
         public async Task<AuthCodeResponse> GetCode(string client_id, Guid state)
         {
             var code = new Random().Next(99999, int.MaxValue);
-            await _homeDb.UpsertCode(code, client_id);
+            await _homeDb.UpsertCode(client_id, code);
 
             return new AuthCodeResponse { code = code, 
                                           state = state};
@@ -64,9 +65,19 @@ namespace logic
 
                 var resBody = new AuthTokenResponse
                 {
-                    access_token = _authToken.Value.access_token,
-                    token_type = _authToken.Value.token_type
+                    access_token = Convert.ToBase64String(Encoding.UTF8.GetBytes("access token" + new Random().Next(999999999, int.MaxValue).ToString())),
+                    token_type = _authToken.Value.token_type,
+                    refresh_token = Convert.ToBase64String(Encoding.UTF8.GetBytes("refresh token" + new Random().Next(999999999, int.MaxValue).ToString()))
                 };
+
+                var tokenDbEntity = new TokenUpdateDbEntity
+                {
+                    access_token = resBody.access_token,
+                    token_type = resBody.token_type,
+                    refresh_token = resBody.refresh_token
+                };
+
+                await _homeDb.UpdateToken(clientId, tokenDbEntity);
 
                 return await Task.FromResult(resBody);
             }

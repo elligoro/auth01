@@ -1,4 +1,5 @@
 ﻿using authorization.contracts;
+using authorization.DB.Models;
 using authorization.persistance;
 using System;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace persistence
         {
             _context = context;
         }
-        public async Task UpsertCode(int code, string client_id)
+        public async Task UpsertCode(string client_id, int code)
         {
             var dbcodeEntity = await _context.Codes.FindAsync(client_id);
             if (dbcodeEntity is null)
@@ -32,6 +33,16 @@ namespace persistence
         public async Task<Code> GetCodeDbEntity(string client_id)
         {
              return await _context.Codes.FindAsync(client_id);
+        }
+
+        public async Task UpdateToken(string client_id, TokenUpdateDbEntity tokenEntity)
+        {
+            var codeEntity = await _context.Codes.FindAsync(client_id);
+            codeEntity.AccessToken = tokenEntity.access_token;
+            codeEntity.RefreshToken = tokenEntity.refresh_token;
+
+            _context.Codes.Update(codeEntity);
+            await _context.SaveChangesAsync();
         }
     }
 }
